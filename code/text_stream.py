@@ -2,11 +2,11 @@
 The Class MyText is used to generate either a stream of tokenized sentences or
 tokenized documents from the reviews of all businesses in our MongoDB.  A
 'document' in this case is considered to be the list returned after
-concatenating all of the sentences found across all reviews for a given
-business.  This class is used to detect bi-grams over our entire corpus,
+concatenating all of the tokenized sentence lists found across all reviews for
+a given business. This class is used to detect bi-grams in our entire corpus,
 initialize the dictionary to use in our bag-of-words, and to generate the
-corpus itself.  A 'phrase_file' can be specified in order to use bi-grams
-during the tokenization step.
+corpus bag-of-words file itself.  A 'phrase_file' can be specified in order to
+use bi-grams during the tokenization step.
 
 notes: make sure mongod running. use `sudo mongod` in terminal
 """
