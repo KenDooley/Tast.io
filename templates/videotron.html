@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<link rel=stylesheet type="text/css" href="../static/videotron.css"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;libraries=places"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
+<!-- <script type="text/javascript" src="../static/js/modernizr-latest.js"></script> -->
+<script type="text/javascript" src="../static/js/jquery.tubular.js"></script>
+<script>
+        $().ready(function() {
+                $('#wrapper').tubular({videoId: 'GHS7sGUEi54', repeat: true}); 
+        });
+    </script>
+
+</head>
+    <title>WUB</title>
+</head>
+
+<body>
+        <div id="wrapper" style="position: relative; z-index: 99;">
+                <div class="social">
+                </div>
+                <div class="titles">
+                    <p>Tast.io!</p><br><br><br>
+                </div>
+                <!-- <form action="javascript:void(0);" name="form1" id="form1">
+                    <input type="text" class="textbox" id="location" value="" name="firstname" placeholder="Where to?"/>
+                    <input type="submit" value="Submit" class="submit" />
+
+                </form> -->
+                <form action="/get_similarities" method='POST' name="form1" id="form1">
+                    <input type="text" name="user_input" class="textbox" id="location" value="" placeholder="Where to?"/>
+                    <input type="submit" style="position: absolute; left: -9999px"/>
+                    <!-- div<input type="submit"> -->
+                </form>
+                <div id="map-canvas"></div>
+        </div>
+<script type="text/javascript">
+    //Autocomplete variables
+    var input = document.getElementById('location');
+    var searchform = document.getElementById('form1');
+    var place;
+    var options = {
+    // bounds: hyderabadBounds,
+    types:  ['establishment'],
+    // componentRestrictions: { country: 'pk' }
+    };
+
+    var autocomplete = new google.maps.places.Autocomplete(input, options);
+ 
+    //Google Map variables
+    var map;
+    var marker;
+ 
+    //Add listener to detect autocomplete selection
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        place = autocomplete.getPlace();
+        // console.log(place.name);
+    });
+
+    
+
+    //Add listener to search
+    searchform.addEventListener("submit", function() {
+        var newlatlong = new google.maps.LatLng(place.geometry.location.lat(),place.geometry.location.lng());
+        map.setCenter(newlatlong);
+        marker.setPosition(newlatlong);
+        map.setZoom(12);
+ 
+    });
+     
+    //Reset the inpout box on click
+    input.addEventListener('click', function(){
+        input.value = "";
+    });
+ 
+ 
+ 
+    function initialize() {
+      var myLatlng = new google.maps.LatLng(51.517503,-0.133896);
+      var mapOptions = {
+        zoom: 1,
+        center: myLatlng
+      }
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+ 
+      marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: 'Main map'
+      });
+    }
+ 
+    google.maps.event.addDomListener(window, 'load', initialize);
+ 
+</script>
+</body>
+</html>

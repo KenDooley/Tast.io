@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>A simple map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
+<link rel="stylesheet" href="../static/SlickGrid/slick.grid.css" type="text/css"/>
+<link rel="stylesheet" href="../static/SlickGrid/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/>
+<link rel="stylesheet" href="../static/SlickGrid/examples/examples.css" type="text/css"/>
+
+
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; left:40%; width:60%; height: 97%; margin-top: 10px; margin-bottom: 9px; }
+</style>
+<script>
+
+var myNames = [];
+var myLats = [];
+
+
+
+</script>
+</head>
+<body>
+<table width="100%">
+  <tr>
+    <td valign="top" width="50%">
+      <div id="myGrid" style="width:505px;height:620px;margin-top:6px"></div>
+    </td>
+    <td valign="top">
+      <h2>Demonstrates:</h2>
+      <ul>
+        <li>basic grid with minimal configuration</li>
+      </ul>
+        <h2>View Source:</h2>
+        <ul>
+            <li><A href="https://github.com/mleibman/SlickGrid/blob/gh-pages/examples/example1-simple.html" target="_sourcewindow"> View the source for this example on Github</a></li>
+        </ul>
+    </td>
+  </tr>
+</table>
+<script src="../static/SlickGrid/lib/jquery-1.7.min.js"></script>
+<script src="../static/SlickGrid/lib/jquery.event.drag-2.2.js"></script>
+
+<script src="../static/SlickGrid/slick.core.js"></script>
+<script src="../static/SlickGrid/slick.grid.js"></script>
+
+<script>
+  var grid;
+  var columns = [
+    {id: "Name", name: "Name", field: "name", "width":200},
+    {id: "Rating", name: "Rating", field: "rating"},
+    {id: "Address", name: "Address", field: "address"},
+    {id: "Category", name: "Category", field: "category"},
+    // {id: "finish", name: "Finish", field: "finish"},
+    // {id: "effort-driven", name: "Effort Driven", field: "effortDriven"}
+  ];
+  var options = {
+    enableCellNavigation: true,
+    enableColumnReorder: false,
+    rowHeight: 33
+  };
+  $(function () {
+    var data = [];
+    for (var i = 0; i < 20; i++) {
+      data[i] = {
+        name: "Task " + i,
+        rating: "5 days",
+        address: Math.round(Math.random() * 100),
+        category: "01/01/2009",
+        // finish: "01/05/2009",
+        // effortDriven: (i % 5 == 0)
+      };
+    }
+    grid = new Slick.Grid("#myGrid", data, columns, options);
+  })
+</script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
+
+<div id='map'></div>
+<script>
+var j = {{top_restaurants|safe}};
+// var j_clean = j.replace('\"', '').replace('\'', '');
+// var myObject = JSON.parse(j);
+// console.log(myObject);
+var state = j[0]['location'];
+
+if (state === 'CA'){
+    var loca = [37.774, -122.44];
+} else {
+    var loca = [40.743, -73.97];
+}
+
+L.mapbox.accessToken = 'pk.eyJ1Ijoia3Jkb29sZXkiLCJhIjoic2FqaHloOCJ9.b9Qc6ntzIzCymoKXryONIQ';
+var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 12, maxZoom: 16})
+    .setView(loca, 13);
+
+for (i=0; i<Object.keys(j).length; i++){
+    L.marker([j[i]['coordinate']['latitude'], j[i]['coordinate']['longitude']], {opacity: j[i]['sim_score']}).bindLabel(j[i]['name']).addTo(map);
+}
+
+
+
+</script>
+</body>
+</html>
+
+<!-- .setView([37.772, -122.463], 13);  San Francisco-->
+<!-- .setView([40.753, -74.009], 13);  New York -->
