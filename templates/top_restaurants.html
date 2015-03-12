@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel=stylesheet type="text/css" href="../static/top_restaurants.css"></script>
 <meta charset=utf-8 />
 <title>A simple map</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
@@ -9,11 +10,28 @@
 <link rel="stylesheet" href="../static/SlickGrid/slick.grid.css" type="text/css"/>
 <link rel="stylesheet" href="../static/SlickGrid/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/>
 <link rel="stylesheet" href="../static/SlickGrid/examples/examples.css" type="text/css"/>
+<link rel="stylesheet" href="dist/components/bootstrap/docs/assets/css/bootstrap.css" type="text/css"/>
+<link rel="stylesheet" href="dist/example-bootstrap.css" type="text/css"/>
+<script src="dist/components/jquery/jquery.js"></script>
+<script src="dist/components/slickgrid/lib/jquery.event.drag-2.0.min.js"></script>
+<script src="dist/components/jquery-ui/ui/jquery.ui.core.js"></script>
+<script src="dist/components/jquery-ui/ui/jquery.ui.widget.js"></script>
+<script src="dist/components/jquery-ui/ui/jquery.ui.mouse.js"></script>
+<script src="dist/components/jquery-ui/ui/jquery.ui.resizable.js"></script>
+<script src="dist/components/jquery-ui/ui/jquery.ui.sortable.js"></script>
+<!-- slickgrid -->
+<script src="dist/components/slickgrid/slick.core.js"></script>
+<script src="dist/components/slickgrid/slick.grid.js"></script>
+<script src="dist/components/slickgrid/slick.dataview.js"></script>
+<script src="dist/components/slickgrid/plugins/slick.checkboxselectcolumn.js"></script>
+<script src="dist/components/slickgrid/plugins/slick.rowselectionmodel.js"></script>
+<!-- bootstrap helper -->
+<script src="../bootstrap/bootstrap-slickgrid.js"></script>
 
 
 <style>
   body { margin:0; padding:0; }
-  #map { position:absolute; top:0; left:40%; width:60%; height: 94%; margin-top: 33px}
+  #map { position:absolute; top:0; left:40%; width:60%; height: 93%; margin-top: 38px}
 </style>
 <script>
 
@@ -25,10 +43,15 @@ var myLats = [];
 </script>
 </head>
 <body>
-<table width="100%">
+
+<div class="titles" id="topbar">
+    <p id="title_link"><a href="/restaurant_query" id="title_link">Tast.io</a></p>
+    <!-- <a href="http://www.w3schools.com" id="banner">Visit W3Schools.com!</a> -->
+</div>
+<table width="100%" id="myTable">
   <tr>
     <td valign="top" width="50%">
-      <div id="myGrid" style="width:79%;height:592px;margin-top:30px"></div>
+      <div id="myGrid" style="width:80%;height:585px;margin-top:34px"></div>
     </td>
     <td valign="top">
       
@@ -44,25 +67,25 @@ var myLats = [];
 <script>
   var grid;
   var j = {{top_restaurants|safe}};
+  var N = Object.keys(j).length
+
   var columns = [
     {id: "Name", name: "Name", field: "name", width:200, resizable: false, formatter: function ( row, cell, value, columnDef, dataContext ) {
-            console.log(dataContext);
             return "<a href=" + dataContext['url'] + " target=\"_blank\">" + value + '</a>';}},
     {id: "Rating", name: "Rating", field: "rating", width:40, resizable: false},
     {id: "Address", name: "Address", field: "address", width:150, resizable: false},
     {id: "Category", name: "Category", field: "category", width:100, resizable: false},
-    // {id: "finish", name: "Finish", field: "finish"},
-    // {id: "effort-driven", name: "Effort Driven", field: "effortDriven"}
   ];
-  console.log(j)
+
   var options = {
     enableCellNavigation: true,
     enableColumnReorder: false,
     rowHeight: 33
   };
+  
   $(function () {
     var data = [];
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < N; i++) {
       data[i] = {
         name: j[i]['name'],
         url: j[i]['url'],
@@ -97,7 +120,7 @@ L.mapbox.accessToken = 'pk.eyJ1Ijoia3Jkb29sZXkiLCJhIjoic2FqaHloOCJ9.b9Qc6ntzIzCy
 var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 16})
     .setView(loca, 13);
 
-for (i=0; i<20; i++){
+for (i=0; i<N; i++){
   if (typeof j[i]['coordinate']['latitude'] !== 'undefined') {
     L.marker([j[i]['coordinate']['latitude'], j[i]['coordinate']['longitude']], {opacity: j[i]['sim_score']}).bindLabel(j[i]['name']).addTo(map);
   }
