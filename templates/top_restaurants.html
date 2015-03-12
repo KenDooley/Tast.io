@@ -13,7 +13,7 @@
 
 <style>
   body { margin:0; padding:0; }
-  #map { position:absolute; top:0; left:40%; width:60%; height: 97%; margin-top: 10px; margin-bottom: 9px; }
+  #map { position:absolute; top:0; left:40%; width:60%; height: 94%; margin-top: 33px}
 </style>
 <script>
 
@@ -28,17 +28,10 @@ var myLats = [];
 <table width="100%">
   <tr>
     <td valign="top" width="50%">
-      <div id="myGrid" style="width:505px;height:620px;margin-top:6px"></div>
+      <div id="myGrid" style="width:79%;height:592px;margin-top:30px"></div>
     </td>
     <td valign="top">
-      <h2>Demonstrates:</h2>
-      <ul>
-        <li>basic grid with minimal configuration</li>
-      </ul>
-        <h2>View Source:</h2>
-        <ul>
-            <li><A href="https://github.com/mleibman/SlickGrid/blob/gh-pages/examples/example1-simple.html" target="_sourcewindow"> View the source for this example on Github</a></li>
-        </ul>
+      
     </td>
   </tr>
 </table>
@@ -50,14 +43,18 @@ var myLats = [];
 
 <script>
   var grid;
+  var j = {{top_restaurants|safe}};
   var columns = [
-    {id: "Name", name: "Name", field: "name", "width":200},
-    {id: "Rating", name: "Rating", field: "rating"},
-    {id: "Address", name: "Address", field: "address"},
-    {id: "Category", name: "Category", field: "category"},
+    {id: "Name", name: "Name", field: "name", width:200, resizable: false, formatter: function ( row, cell, value, columnDef, dataContext ) {
+            console.log(dataContext);
+            return "<a href=" + dataContext['url'] + " target=\"_blank\">" + value + '</a>';}},
+    {id: "Rating", name: "Rating", field: "rating", width:40, resizable: false},
+    {id: "Address", name: "Address", field: "address", width:150, resizable: false},
+    {id: "Category", name: "Category", field: "category", width:100, resizable: false},
     // {id: "finish", name: "Finish", field: "finish"},
     // {id: "effort-driven", name: "Effort Driven", field: "effortDriven"}
   ];
+  console.log(j)
   var options = {
     enableCellNavigation: true,
     enableColumnReorder: false,
@@ -67,10 +64,11 @@ var myLats = [];
     var data = [];
     for (var i = 0; i < 20; i++) {
       data[i] = {
-        name: "Task " + i,
-        rating: "5 days",
-        address: Math.round(Math.random() * 100),
-        category: "01/01/2009",
+        name: j[i]['name'],
+        url: j[i]['url'],
+        rating: j[i]['rating'],
+        address: j[i]['address'][0],
+        category: j[i]['category'][0][0],
         // finish: "01/05/2009",
         // effortDriven: (i % 5 == 0)
       };
@@ -96,11 +94,13 @@ if (state === 'CA'){
 }
 
 L.mapbox.accessToken = 'pk.eyJ1Ijoia3Jkb29sZXkiLCJhIjoic2FqaHloOCJ9.b9Qc6ntzIzCymoKXryONIQ';
-var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 12, maxZoom: 16})
+var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 16})
     .setView(loca, 13);
 
-for (i=0; i<Object.keys(j).length; i++){
+for (i=0; i<20; i++){
+  if (typeof j[i]['coordinate']['latitude'] !== 'undefined') {
     L.marker([j[i]['coordinate']['latitude'], j[i]['coordinate']['longitude']], {opacity: j[i]['sim_score']}).bindLabel(j[i]['name']).addTo(map);
+  }
 }
 
 
