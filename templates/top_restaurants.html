@@ -7,31 +7,30 @@
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
-<link rel="stylesheet" href="../static/SlickGrid/slick.grid.css" type="text/css"/>
-<link rel="stylesheet" href="../static/SlickGrid/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/>
-<link rel="stylesheet" href="../static/SlickGrid/examples/examples.css" type="text/css"/>
-<link rel="stylesheet" href="dist/components/bootstrap/docs/assets/css/bootstrap.css" type="text/css"/>
-<link rel="stylesheet" href="dist/example-bootstrap.css" type="text/css"/>
-<script src="dist/components/jquery/jquery.js"></script>
-<script src="dist/components/slickgrid/lib/jquery.event.drag-2.0.min.js"></script>
-<script src="dist/components/jquery-ui/ui/jquery.ui.core.js"></script>
-<script src="dist/components/jquery-ui/ui/jquery.ui.widget.js"></script>
-<script src="dist/components/jquery-ui/ui/jquery.ui.mouse.js"></script>
-<script src="dist/components/jquery-ui/ui/jquery.ui.resizable.js"></script>
-<script src="dist/components/jquery-ui/ui/jquery.ui.sortable.js"></script>
+ 
+<link rel="stylesheet" href="../static/dist/components/slickgrid/slick.grid.css" type="text/css"/>
+<link rel="stylesheet" href="../static/dist/components/bootstrap/docs/assets/css/bootstrap.css" type="text/css"/>
+<link rel="stylesheet" href="../static/dist/example-bootstrap.css" type="text/css"/>
+<script src="../static/dist/components/jquery/jquery.js"></script>
+<script src="../static/dist/components/slickgrid/lib/jquery.event.drag-2.0.min.js"></script>
+<script src="../static/dist/components/jquery-ui/ui/jquery.ui.core.js"></script>
+<script src="../static/dist/components/jquery-ui/ui/jquery.ui.widget.js"></script>
+<script src="../static/dist/components/jquery-ui/ui/jquery.ui.mouse.js"></script>
+<script src="../static/dist/components/jquery-ui/ui/jquery.ui.resizable.js"></script>
+<script src="../static/dist/components/jquery-ui/ui/jquery.ui.sortable.js"></script>
 <!-- slickgrid -->
-<script src="dist/components/slickgrid/slick.core.js"></script>
-<script src="dist/components/slickgrid/slick.grid.js"></script>
-<script src="dist/components/slickgrid/slick.dataview.js"></script>
-<script src="dist/components/slickgrid/plugins/slick.checkboxselectcolumn.js"></script>
-<script src="dist/components/slickgrid/plugins/slick.rowselectionmodel.js"></script>
+<script src="../static/dist/components/slickgrid/slick.core.js"></script>
+<script src="../static/dist/components/slickgrid/slick.grid.js"></script>
+<script src="../static/dist/components/slickgrid/slick.dataview.js"></script>
+<script src="../static/dist/components/slickgrid/plugins/slick.checkboxselectcolumn.js"></script>
+<script src="../static/dist/components/slickgrid/plugins/slick.rowselectionmodel.js"></script>
 <!-- bootstrap helper -->
-<script src="../bootstrap/bootstrap-slickgrid.js"></script>
+<script src="../static/bootstrap/bootstrap-slickgrid.js"></script>
 
 
 <style>
   body { margin:0; padding:0; }
-  #map { position:absolute; top:0; left:40%; width:60%; height: 93%; margin-top: 38px}
+  #map { position:absolute; top:0; left:46%; width:54%; height: 93%; margin-top: 38px}
 </style>
 <script>
 
@@ -44,60 +43,170 @@ var myLats = [];
 </head>
 <body>
 
-<div class="titles" id="topbar">
+<div id="topbar">
     <p id="title_link"><a href="/restaurant_query" id="title_link">Tast.io</a></p>
     <!-- <a href="http://www.w3schools.com" id="banner">Visit W3Schools.com!</a> -->
 </div>
 <table width="100%" id="myTable">
   <tr>
     <td valign="top" width="50%">
-      <div id="myGrid" style="width:80%;height:585px;margin-top:34px"></div>
+      <div id="myGrid" style="width:600px;height:584px;margin-top:0px" class="grid"></div>
+      <!-- <div id="grid4" class="grid"></div> -->
     </td>
     <td valign="top">
       
     </td>
   </tr>
 </table>
-<script src="../static/SlickGrid/lib/jquery-1.7.min.js"></script>
+<!-- <script src="../static/SlickGrid/lib/jquery-1.7.min.js"></script>
 <script src="../static/SlickGrid/lib/jquery.event.drag-2.2.js"></script>
 
 <script src="../static/SlickGrid/slick.core.js"></script>
 <script src="../static/SlickGrid/slick.grid.js"></script>
-
+ -->
 <script>
   var grid;
   var j = {{top_restaurants|safe}};
   var N = Object.keys(j).length
 
-  var columns = [
-    {id: "Name", name: "Name", field: "name", width:200, resizable: false, formatter: function ( row, cell, value, columnDef, dataContext ) {
-            return "<a href=" + dataContext['url'] + " target=\"_blank\">" + value + '</a>';}},
-    {id: "Rating", name: "Rating", field: "rating", width:40, resizable: false},
-    {id: "Address", name: "Address", field: "address", width:150, resizable: false},
-    {id: "Category", name: "Category", field: "category", width:100, resizable: false},
+  // var columns = [
+  //   {id: "Name", name: "Name", field: "name", width:200, resizable: false, formatter: function ( row, cell, value, columnDef, dataContext ) {
+  //           return "<a href=" + dataContext['url'] + " target=\"_blank\">" + value + '</a>';}},
+  //   {id: "Rating", name: "Rating", field: "rating", width:40, resizable: false},
+  //   {id: "Address", name: "Address", field: "address", width:150, resizable: false},
+  //   {id: "Category", name: "Category", field: "category", width:100, resizable: false},
+  // ];
+
+  // var options = {
+  //   enableCellNavigation: true,
+  //   enableColumnReorder: false,
+  //   rowHeight: 33
+  // };
+
+  // $(function () {
+  //   var data = [];
+  //   for (var i = 0; i < N; i++) {
+  //     data[i] = {
+  //       name: j[i]['name'],
+  //       url: j[i]['url'],
+  //       rating: j[i]['rating'],
+  //       address: j[i]['address'][0],
+  //       category: j[i]['category'][0][0],
+  //       // finish: "01/05/2009",
+  //       // effortDriven: (i % 5 == 0)
+  //     };
+  //   }
+  //   grid = new Slick.Grid("#myGrid", data, columns, options);
+  // })
+
+
+jQuery(function ($) {
+
+  function myFormat(row, cell, value, columnDef, dataContext ) {
+            return "<a href=" + dataContext['url'] + " target=\"_blank\">" + value + '</a>';}
+  
+
+ var columnsSortable = [
+    {id: "Rank", name: "", field: "rank", width:31, resizable: false},
+    {id: "Name", name: "Name", field: "name", width:210, resizable: false, formatter: myFormat},
+    {id: "Rating", name: "Rating", field: "rating", width:60, resizable: false},
+    {id: "Address", name: "Address", field: "address", width:160, resizable: false},
+    {id: "Category", name: "Category", field: "category", width:151, resizable: false},
   ];
 
-  var options = {
-    enableCellNavigation: true,
-    enableColumnReorder: false,
-    rowHeight: 33
-  };
-  
-  $(function () {
-    var data = [];
-    for (var i = 0; i < N; i++) {
-      data[i] = {
-        name: j[i]['name'],
-        url: j[i]['url'],
-        rating: j[i]['rating'],
-        address: j[i]['address'][0],
-        category: j[i]['category'][0][0],
-        // finish: "01/05/2009",
-        // effortDriven: (i % 5 == 0)
-      };
+  var dataFull = [];
+  for (var i = 0; i < N; i++) {
+    dataFull[i] = {
+      id: 'id_' + i,
+      rank: i + 1,
+      name: j[i]['name'],
+      url: j[i]['url'],
+      rating: j[i]['rating'],
+      address: j[i]['address'][0],
+      category: j[i]['category'][0][0],
+    };
+  }
+
+  var columns;
+  var data;
+
+
+  // Example 4: Row selection
+  columns = columnsSortable.slice();
+  data = dataFull.slice();
+
+  $("#myGrid").slickgrid({
+    columns: columns,
+    data: data,
+    slickGridOptions: {
+      enableCellNavigation: true,
+      enableColumnReorder: false,
+      forceFitColumns: true,
+      rowHeight: 35,
+      showHeaderRow: false
+    },
+    // handleCreate takes some extra options:
+    sortCol: undefined,
+    sortDir: true,
+    handleCreate: function () {
+      var o = this.wrapperOptions;
+
+      // checkbox column: add it
+      // var columns = o.columns.slice();
+      // var checkboxSelector = new Slick.CheckboxSelectColumn({});
+      // columns.unshift(checkboxSelector.getColumnDefinition());
+
+      // configure grid with client-side data view
+      var dataView = new Slick.Data.DataView();
+      var grid = new Slick.Grid(this.element, dataView,
+        columns, o.slickGridOptions);
+
+      // selection model
+      grid.setSelectionModel(new Slick.RowSelectionModel());
+      // grid.registerPlugin(checkboxSelector);
+
+      // sorting
+      var sortCol = o.sortCol;
+      var sortDir = o.sortDir;
+      function comparer(a, b) {
+        var x = a[sortCol], y = b[sortCol];
+        return (x == y ? 0 : (x > y ? 1 : -1));
+      }
+      grid.onSort.subscribe(function (e, args) {
+          sortDir = args.sortAsc;
+          sortCol = args.sortCol.field;
+          dataView.sort(comparer, sortDir);
+          grid.invalidateAllRows();
+          grid.render();
+      });
+
+      // set the initial sorting to be shown in the header
+      if (sortCol) {
+          grid.setSortColumn(sortCol, sortDir);
+      }
+
+       // initialize the model after all the events have been hooked up
+      dataView.beginUpdate();
+      dataView.setItems(o.data);
+      dataView.endUpdate();
+
+      // if you don't want the items that are not visible (due to being filtered out
+      // or being on a different page) to stay selected, pass 'false' to the second arg
+      dataView.syncGridSelection(grid, true);
+
+      grid.resizeCanvas(); // XXX Why is this needed? A possible bug?
+                           // If this is missing, the grid will have
+                           // a horizontal scrollbar, and the vertical
+                           // scrollbar cannot be moved. A column reorder
+                           // action fixes the situation.
+
     }
-    grid = new Slick.Grid("#myGrid", data, columns, options);
-  })
+
+  });
+
+
+
+});
 </script>
 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
@@ -111,13 +220,13 @@ var j = {{top_restaurants|safe}};
 var state = j[0]['location'];
 
 if (state === 'CA'){
-    var loca = [37.774, -122.44];
+    var loca = [37.777, -122.43];
 } else {
     var loca = [40.743, -73.97];
 }
 
 L.mapbox.accessToken = 'pk.eyJ1Ijoia3Jkb29sZXkiLCJhIjoic2FqaHloOCJ9.b9Qc6ntzIzCymoKXryONIQ';
-var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 16})
+var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 17})
     .setView(loca, 13);
 
 for (i=0; i<N; i++){
