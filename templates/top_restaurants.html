@@ -7,6 +7,7 @@
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
+<script src="../static/Leaflet.MakiMarkers/Leaflet.MakiMarkers.js"></script>
  
 <link rel="stylesheet" href="../static/dist/components/slickgrid/slick.grid.css" type="text/css"/>
 <link rel="stylesheet" href="../static/dist/components/bootstrap/docs/assets/css/bootstrap.css" type="text/css"/>
@@ -50,7 +51,7 @@ var myLats = [];
 <table width="100%" id="myTable">
   <tr>
     <td valign="top" width="50%">
-      <div id="myGrid" style="width:600px;height:584px;margin-top:0px" class="grid"></div>
+      <div id="myGrid" style="width:589px;height:584px;margin-top:0px" class="grid"></div>
       <!-- <div id="grid4" class="grid"></div> -->
     </td>
     <td valign="top">
@@ -67,7 +68,11 @@ var myLats = [];
 <script>
   var grid;
   var j = {{top_restaurants|safe}};
-  var N = Object.keys(j).length
+  var N = Object.keys(j).length - 1
+
+  var lati = j[N.toString()][0]
+  var longi = j[N.toString()][1]
+
 
   // var columns = [
   //   {id: "Name", name: "Name", field: "name", width:200, resizable: false, formatter: function ( row, cell, value, columnDef, dataContext ) {
@@ -225,15 +230,22 @@ if (state === 'CA'){
     var loca = [40.743, -73.97];
 }
 
+var icon = L.MakiMarkers.icon({icon: "rocket", color: "#b0b", size: "m"});
+var iconRest = L.MakiMarkers.icon({icon: "restaurant", color: "#008080", size: "m"});
+
 L.mapbox.accessToken = 'pk.eyJ1Ijoia3Jkb29sZXkiLCJhIjoic2FqaHloOCJ9.b9Qc6ntzIzCymoKXryONIQ';
 var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 17})
     .setView(loca, 13);
 
 for (i=0; i<N; i++){
   if (typeof j[i]['coordinate']['latitude'] !== 'undefined') {
-    L.marker([j[i]['coordinate']['latitude'], j[i]['coordinate']['longitude']], {opacity: j[i]['sim_score']}).bindLabel(j[i]['name']).addTo(map);
+    L.marker([j[i]['coordinate']['latitude'], j[i]['coordinate']['longitude']], {opacity: j[i]['sim_score'], icon: iconRest}).bindLabel(j[i]['name']).addTo(map);
   }
 }
+
+L.marker([lati,longi], {icon: icon}).bindLabel("You").addTo(map);
+
+
 
 
 

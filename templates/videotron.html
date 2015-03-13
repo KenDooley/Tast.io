@@ -9,28 +9,55 @@
 <script>
         $().ready(function() {
                 $('#wrapper').tubular({videoId: 'GHS7sGUEi54', repeat: true}); 
+
+                function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else {
+                        console.log("Geolocation is not supported by this browser.");
+                    }
+                }
+
+                function showPosition(position) { 
+                    console.log('got location')
+                    lati_longi = [position.coords.latitude, position.coords.longitude];
+                    val = $('option.geo')[0].value;
+                    valnew = $('option.geonew')[0].value;
+                    $('option.geo').attr('value', val + ',' + lati_longi);
+                    $('option.geonew').attr('value', valnew + ',' + lati_longi);
+                }
+                getLocation();
         });
-    </script>
+</script>
 
 </head>
-    <title>WUB</title>
+    <title>TASTIO</title>
 </head>
 
 <body>
         <div id="wrapper" style="position: relative; z-index: 99;">
                 <div class="social">
                 </div>
-                <div class="titles">
-                    <p>Tast.io!</p><br><br><br>
+                <div class="titles" id="topbar">
+                    <p>Tast.io</p>
                 </div>
+                <br><br><br>
                 <!-- <form action="javascript:void(0);" name="form1" id="form1">
                     <input type="text" class="textbox" id="location" value="" name="firstname" placeholder="Where to?"/>
                     <input type="submit" value="Submit" class="submit" />
 
                 </form> -->
                 <form action="/get_similarities" method='POST' name="form1" id="form1">
-                    <input type="text" name="user_input" class="textbox" id="location" value="" placeholder="Where to?"/>
-                    <input type="submit" style="position: absolute; left: -9999px"/>
+                    <input type="text" name="user_input" class="textbox" id="location" value="" placeholder="Find me places like ..."/>
+                    <select id="dropdown" name="state"> 
+                        <option value="CA">San Francisco</option> 
+                        <option value="NY">New York</option> 
+                    </select>
+                    <select id="dropdown2" name="dist"> 
+                        <option class="geonew" value="0">Any distance from me</option> 
+                        <option class="geo" value="1">Within 2 miles</option> 
+                    </select>
+                    <input id="submit-btn" type="submit" value="Press here" class="text-center"/>
                     <!-- div<input type="submit"> -->
                 </form>
                 <div id="map-canvas"></div>
@@ -43,7 +70,7 @@
     var options = {
     // bounds: hyderabadBounds,
     types:  ['establishment'],
-    // componentRestrictions: { country: 'pk' }
+    componentRestrictions: { country: 'us' }
     };
 
     var autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -70,9 +97,9 @@
     });
      
     //Reset the inpout box on click
-    input.addEventListener('click', function(){
-        input.value = "";
-    });
+    // input.addEventListener('click', function(){
+    //     input.value = "";
+    // });
  
  
  
