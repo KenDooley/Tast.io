@@ -111,7 +111,7 @@ input
     -ms-transform: translate(-50%, -50%);
     font-size: 44px;
     left: 53.11%;
-    top: 33.5%;
+    top: 33.3%;
     width: 146px;
     height: 27px;
     color: white;
@@ -122,8 +122,8 @@ input
 #boxdiv {
     position: absolute;
     width: 780px;
-    height: 90px;
-    top: 180px;
+    height: 44px;
+    top: 185px;
     left: 240px;
     background-color: black;
     border: 2px solid;
