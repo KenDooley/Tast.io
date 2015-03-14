@@ -232,6 +232,8 @@ if (state === 'CA'){
 
 var icon = L.MakiMarkers.icon({icon: "rocket", color: "#b0b", size: "m"});
 var iconRest = L.MakiMarkers.icon({icon: "restaurant", color: "#008080", size: "m"});
+var iconRestMouse = L.MakiMarkers.icon({icon: "restaurant", color: "#FFFF00", size: "l"});
+var test = "https://api.tiles.mapbox.com/v3/marker/pin-l-restaurant+FFFF00@2x.png"
 
 L.mapbox.accessToken = 'pk.eyJ1Ijoia3Jkb29sZXkiLCJhIjoic2FqaHloOCJ9.b9Qc6ntzIzCymoKXryONIQ';
 var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 17})
@@ -239,13 +241,20 @@ var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 17})
 
 for (i=0; i<N; i++){
   if (typeof j[i]['coordinate']['latitude'] !== 'undefined') {
-    L.marker([j[i]['coordinate']['latitude'], j[i]['coordinate']['longitude']], {opacity: j[i]['sim_score'], icon: iconRest}).bindLabel(j[i]['name']).addTo(map);
+    // var website = j[i]['url']
+    // window.i = i
+    L.marker([j[i]['coordinate']['latitude'], j[i]['coordinate']['longitude']], 
+             {opacity: j[i]['sim_score'], icon: iconRest, alt: i}).bindLabel(j[i]['name']).on('click', function(e) 
+             {window.open(j[e.target.options.alt]['url']);}).addTo(map);
   }
 }
 
+
 L.marker([lati,longi], {icon: icon}).bindLabel("You").addTo(map);
 
-
+var changeImage = function(i) {
+                      $('img[alt=\"'+i+'\"]').attr('src', test)
+                  };
 
 
 
