@@ -15,7 +15,7 @@ SECRET_KEY = "xLX6MySk_gFK3cGI_FzwethvqDU"
 TOKEN = "BdQOXSrzwX6SO6vuAuzHLCUNOmGEMxCj"
 SECRET_TOKEN = "1Xcrnf4VVGWQYk-bOWGacaipNtc"
 
-TARGET_DISTANCE = 2
+
 
 app = Flask(__name__)
 
@@ -46,6 +46,14 @@ def get_similarities():
     parsed = local_loc.split(",")
     local_search = int(parsed[0])
     current_location = tuple(map(float,parsed[1:]))
+
+    if local_search == 0:
+        target_distance = 500
+    elif local_search == 1:
+        target_distance = 7
+    else:
+        target_distance = 2
+
 
     search_string = request.form['user_input'].lower()
     target = request.form['state']
@@ -134,7 +142,7 @@ def get_similarities():
             except:
                 continue
             if IDX_NAME[sim[0]]['location'] == target and IDX_NAME[sim[0]]['name'].lower()[:len_targs].encode('utf8') != biz \
-            and vincenty(current_location, geo_location).miles < TARGET_DISTANCE:
+            and vincenty(current_location, geo_location).miles < target_distance:
                 #output.append((sim[1], IDX_NAME[sim[0]]['name'].encode('utf8')))
                 # output.append((IDX_NAME[sim[0]]['name'].encode('utf8'),
                 #                IDX_NAME[sim[0]]['rating'],

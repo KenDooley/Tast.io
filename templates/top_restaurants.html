@@ -66,6 +66,21 @@ var myLats = [];
 <script src="../static/SlickGrid/slick.grid.js"></script>
  -->
 <script>
+  String.format = function() {
+    // The string containing the format items (e.g. "{0}")
+    // will and always has to be the first argument.
+    var theString = arguments[0];
+    
+    // start with the second argument (i = 1)
+    for (var i = 1; i < arguments.length; i++) {
+        // "gm" = RegEx options for Global search (more than one instance)
+        // and for Multiline search
+        var regEx = new RegExp("\\{" + (i - 1) + "\\}", "gm");
+        theString = theString.replace(regEx, arguments[i]);
+    }
+    
+    return theString;
+  }
   var grid;
   var j = {{top_restaurants|safe}};
   var N = Object.keys(j).length - 1
@@ -233,28 +248,61 @@ if (state === 'CA'){
 var icon = L.MakiMarkers.icon({icon: "rocket", color: "#b0b", size: "m"});
 var iconRest = L.MakiMarkers.icon({icon: "restaurant", color: "#008080", size: "m"});
 var iconRestMouse = L.MakiMarkers.icon({icon: "restaurant", color: "#FFFF00", size: "l"});
-var test = "https://api.tiles.mapbox.com/v3/marker/pin-l-restaurant+FFFF00@2x.png"
 
 L.mapbox.accessToken = 'pk.eyJ1Ijoia3Jkb29sZXkiLCJhIjoic2FqaHloOCJ9.b9Qc6ntzIzCymoKXryONIQ';
 var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 17})
     .setView(loca, 13);
 
-for (i=0; i<N; i++){
-  if (typeof j[i]['coordinate']['latitude'] !== 'undefined') {
+for (i=1; i<N+1; i++){
+  if (typeof j[i-1]['coordinate']['latitude'] !== 'undefined') {
     // var website = j[i]['url']
     // window.i = i
-    L.marker([j[i]['coordinate']['latitude'], j[i]['coordinate']['longitude']], 
-             {opacity: j[i]['sim_score'], icon: iconRest, alt: i}).bindLabel(j[i]['name']).on('click', function(e) 
-             {window.open(j[e.target.options.alt]['url']);}).addTo(map);
+    L.marker([j[i-1]['coordinate']['latitude'], j[i-1]['coordinate']['longitude']], 
+             {opacity: j[i-1]['sim_score'], icon: iconRest, alt: i}).bindLabel(j[i-1]['name'])
+              .on('click', function(e) {
+                window.open(j[e.target.options.alt-1]['url']);
+              })
+              .on('mouseover', function(e) {
+                var alt = e.target.options.alt;
+                $($('.slick-row')[Number(alt) - 1]).css('background-color', 'yellow');
+              })
+              .on('mouseout', function(e) {
+                var alt = e.target.options.alt;
+                $($('.slick-row')[Number(alt) - 1]).css('background-color', 'white');
+              })
+              .addTo(map);
   }
 }
 
 
+
 L.marker([lati,longi], {icon: icon}).bindLabel("You").addTo(map);
 
-var changeImage = function(i) {
-                      $('img[alt=\"'+i+'\"]').attr('src', test)
-                  };
+var regularIcon = "https://api.tiles.mapbox.com/v3/marker/pin-m-restaurant+008080@2x.png"
+var litUpIcon = "https://api.tiles.mapbox.com/v3/marker/pin-l-restaurant+FFFF00@2x.png"
+
+$(document).on('mouseenter', ".slick-row", function () {
+    $(this).css("background-color", "yellow");
+    // window.testing = $(this);
+    var rank = $(this).children()[0].innerText;
+    $('img[alt=\"' + rank + '\"]').attr('src', litUpIcon);
+}).on('mouseleave', ".slick-row", function () {
+    $(this).css("background-color", "white");
+    var rank = $(this).children()[0].innerText;
+    $('img[alt=\"' + rank + '\"]').attr('src', regularIcon);
+});
+
+// $('a').mouseover(function() {
+//   console.log('moused');
+//   var rank = $(this).children[0].innerText;
+//   $('img[alt=\"' + rank + '\"]').attr('src', litUpIcon);
+// });
+
+// $(input).mouseover(function()
+// {
+//    var showID = $(this).attr("ID");
+//    alert(showID);
+// });
 
 
 

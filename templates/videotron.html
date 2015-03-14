@@ -23,8 +23,10 @@
                     lati_longi = [position.coords.latitude, position.coords.longitude];
                     val = $('option.geo')[0].value;
                     valnew = $('option.geonew')[0].value;
+                    vallong = $('option.geolong')[0].value;
                     $('option.geo').attr('value', val + ',' + lati_longi);
                     $('option.geonew').attr('value', valnew + ',' + lati_longi);
+                    $('option.geolong').attr('value', vallong + ',' + lati_longi);
                 }
                 getLocation();
         });
@@ -38,8 +40,12 @@
         <div id="wrapper" style="position: relative; z-index: 99;">
                 <div class="social">
                 </div>
+                <div id="boxdiv">
                 <div class="titles" id="topbar">
                     <p>Tast.io</p>
+                </div>
+                <div id="in">
+                    <p>In</p>
                 </div>
                 <br><br><br>
                 <!-- <form action="javascript:void(0);" name="form1" id="form1">
@@ -47,6 +53,7 @@
                     <input type="submit" value="Submit" class="submit" />
 
                 </form> -->
+                
                 <form action="/get_similarities" method='POST' name="form1" id="form1">
                     <input type="text" name="user_input" class="textbox" id="location" value="" placeholder="Find me places like ..."/>
                     <select id="dropdown" name="state"> 
@@ -54,12 +61,15 @@
                         <option value="NY">New York</option> 
                     </select>
                     <select id="dropdown2" name="dist"> 
-                        <option class="geonew" value="0">Any distance from me</option> 
-                        <option class="geo" value="1">Within 2 miles</option> 
+                        <option class="geonew" value="0">Any distance</option> 
+                        <option class="geolong" value="1">Within 7 miles</option> 
+                        <option class="geo" value="2">Within 2 miles</option> 
                     </select>
                     <input id="submit-btn" type="submit" value="Press here" class="text-center"/>
                     <!-- div<input type="submit"> -->
                 </form>
+                </div>
+                
                 <div id="map-canvas"></div>
         </div>
 <script type="text/javascript">

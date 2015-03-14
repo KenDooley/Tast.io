@@ -1,0 +1,133 @@
+html, body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    /* background:url('../img/clouds.jpg');
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: cover; */
+    font-family: Helvetica, Sans-Serif;
+    color: white;
+    background-color: black;
+}
+
+.titles
+{
+    position: fixed;
+    left: 50%;
+    top: 0px;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: left;
+    background-color: black;
+    width: 100%;
+    height: 76px;
+
+}
+
+p
+{
+    color: #F0F0F0;
+    text-decoration: none;
+    font-family: "Copperplate";
+    font-size: 45px;
+    letter-spacing: 1px;
+    line-height: 50%;
+    top-margin: 0px;
+    /*left-margin: 20px;*/
+    /*padding: 10px;*/
+    padding-left: 18px;
+    padding-top: 1px;
+}
+
+input
+{
+    position: fixed;
+    left: 33.5%;
+    top: 33%;
+    width: 355px;
+    height:21px;
+    font-size: 14px;
+    background-color: #F0F0F0;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: left;
+}
+
+#submit-btn {
+    position: fixed;
+    top: 40%;
+    width: 100px;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+    font-family: "Copperplate";
+    font-size: 14px;
+    left: 50%;
+}
+
+#dropdown {
+    margin: auto;
+    position: fixed;
+    font-size: 14px;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -webkit-appearance: menulist-button;
+    -ms-transform: translate(-50%, -50%);
+    left: 60%;
+    top: 33%;
+    width: 200px;
+    height: 27px;
+
+}
+
+#dropdown2 {
+    margin: auto;
+    position: fixed;
+    font-size: 14px;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -webkit-appearance: menulist-button;
+    -ms-transform: translate(-50%, -50%);
+    left: 73.8%;
+    top: 33%;
+    width: 146px;
+    height: 27px;
+
+}
+
+#in p{
+    margin: auto;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    font-size: 44px;
+    left: 53.11%;
+    top: 33.5%;
+    width: 146px;
+    height: 27px;
+    color: white;
+    /*color: rgb(180, 190, 150);*/
+
+}
+
+#boxdiv {
+    position: absolute;
+    width: 780px;
+    height: 90px;
+    top: 180px;
+    left: 240px;
+    background-color: black;
+    border: 2px solid;
+    border-color: black;
+    border-radius: 25px;
+}
+
