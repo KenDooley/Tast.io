@@ -7,6 +7,7 @@ from flask import request
 from gensim import similarities
 from geopy.distance import vincenty
 import libs.yelp.search as yelp
+import numpy as np
 import json
 import pickle
 
@@ -86,19 +87,20 @@ def get_similarities():
     if len(d['businesses']) < 2:
         biz = d['businesses'][0]['name'].lower().encode('utf8')
     else:
+        long_review = np.argmax([item['review_count'] for item in d['businesses']])
         biz1 = d['businesses'][0]['name'].lower().encode('utf8')
         biz2 = d['businesses'][1]['name'].lower().encode('utf8')
 
         len_test = min(len(biz1), len(biz2))
 
         if biz1[:len_test] == biz2[:len_test]:
-            biz = biz1[:len_test]#.encode('utf8')
+            biz = biz2 if long_review else biz1
         else:
-            biz = biz1#.encode('utf8')
+            biz = biz1
 
 
     biz = biz.replace('é','e')
-    print biz
+    print biz, "here"
     print " ".join(name.split('+'))
     state = 'CA'
 
@@ -106,8 +108,10 @@ def get_similarities():
         return redirect(url_for('restaurant_query'))
 
     try:
+        # ids = NAME_IDX[biz]
         ids = NAME_IDX[biz.decode('utf8')]
     except:
+        print "not in database", len(biz)
         return redirect(url_for('restaurant_query'))
 
     vec = BIG_MATRIX[ids]
@@ -135,7 +139,6 @@ def get_similarities():
                 if len(output) == 20:
                     break
     else:
-        print "XXXXXXXXXXX"
         for idx, sim in enumerate(sims):
             try:
                 geo_location = (IDX_NAME[sim[0]]['coordinate']['latitude'], IDX_NAME[sim[0]]['coordinate']['longitude'])
