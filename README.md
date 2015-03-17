@@ -1,4 +1,4 @@
-# [Tast.io](http://tast.io): Better Restaurant Recommendations
+# [Tast.io](http://tast.io): Better Restaurant Recommendations via Word2Vec
 
 ### Kenneth Dooley, Zipfian Academy, 1/3/15 - 3/27/15
 
