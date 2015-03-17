@@ -47,11 +47,11 @@ I pickled the matrix of cosine similarities between every pair of restaurant vec
 One of the interesting results of using this app is that fine distinctions between various subtypes of cuisines can be searched for.  For example, "pizza" is a fairly broad category.  Searches for restaurants like 'Pizza Hut' will return restaurants which are quite similar like Dominos and Papa John's.  However, if we search for a more artisinal wood-fired pizza shop, the results will also skew towards other artisinal wood-fired pizza shops.  This will also work when searching for restaurants that serve thin NY style pizza versus those serving Chicago deep dish pizza.  Other interesting results occur when searching for restaurants with beautiful skyline views of a city.  The results skew towards other restaurants of similar cuisine and price which also offer dramatic views.
 
 ## Possible Next Steps
-* Add additional cities
-* Increase the model's scope to include bars
+* Add additional cities.
+* Increase the model's scope to include bars.
 * Explore other topic modeling techniques such as LDA to see if that would result in better restaurant vectors
 * Use more robust NLP techniques (lemmatization) in pre-processing the full review texts.
-* Explore other methodologies for creating document vectors from word vectors.
+* Explore using the formal Doc2Vec algorithm proposed by [Mikolov and Quoc](http://cs.stanford.edu/~quocle/paragraph_vector.pdf) to create the restaurant vectors.
 
 ## Toolkit + Credits
 1. [Yelp API](https://www.yelp.com/developers/documentation/v2/search_api) 
