@@ -58,7 +58,7 @@ One of the interesting results of using this app is that fine distinctions betwe
 2. [MongoDB](http://www.mongodb.org/) - Chosen because my database operations involved more dumping documents in and pulling documents out than creating complex queries.
   * [pymongo](https://github.com/mongodb/mongo-python-driver) - A python driver for MongoDB
 3. [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/) - A python html-parsing library. It makes it much easier to pull out particular elements from a complex webpage.
-4. [Requests](http://docs.python-requests.org/en/latest/) - A python library for getting webpage html for use in scraping tasks.
+4. [Requests](http://docs.python-requests.org/en/latest/) - A python library used in scraping tasks for getting webpage html.
 4. [Gensim](https://radimrehurek.com/gensim/) - Provides models for a number of natural language processing techniques ... also supports [online machine learning](http://en.wikipedia.org/wiki/Online_machine_learning).
 5. [Natural Language Toolkit](http://www.nltk.org/) - Provides support for natural language processing: stopwords lists, word tokenizers, and more!
 6. [Flask](http://flask.pocoo.org/) - a python based framework for creating web applications.
