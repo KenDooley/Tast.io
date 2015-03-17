@@ -1,4 +1,4 @@
-# [Tast.io](http://tast.io): Better Restaurant Recommendations through Neural Word Embeddings
+# [Tast.io](http://tast.io): Better Restaurant Recommendations
 
 ### Kenneth Dooley, Zipfian Academy, 1/3/15 - 3/27/15
 
