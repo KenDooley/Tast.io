@@ -15,7 +15,7 @@ My dataset consisted of Yelp restaurant reviews for all restaurants in New York 
 The primary dataset for modeling consisted of all reviews for 11,000 restaurants across both New York and San Francisco with more than 50 reviews each. These were filtered from an even larger set of restaurants, however, which had any number of reviews; for each I was able to scrape the full text for each review. The most recent reviews were used up to a limit of 500.
 
 ## Modeling Similarities
-Each restaurant was first modeled as a 'document', which is a string created from the concatenation of the texts from thier most recent (up to) 500 reviews.  I built a clean-tokenize-TFIDF-Word2Vec-Doc2Vec pipeline to create vectors for each restaurant from which cosine similarities could be calculated.  A few different methods of creating these vectors were tried before the final pipeline was chosen through a limited A/B testing framework.
+Each restaurant was first modeled as a 'document', which is a string created from the concatenation of the texts from their most recent (up to) 500 reviews.  I built a clean-tokenize-TFIDF-Word2Vec-Doc2Vec pipeline to create vectors for each restaurant from which cosine similarities could be calculated.  A few different methods of creating these vectors were tried before the final pipeline was chosen through a limited A/B testing framework.
 <br>
 1. Clean - Removed punctuation, symbols, and stopwords.  Performed stemming.  Found frequent word pairs to treat as bi-grams.
 <br>
