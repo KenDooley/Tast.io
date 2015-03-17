@@ -25,7 +25,7 @@ Each restaurant was first modeled as a 'document', which is a string created fro
 <br><br>
 4. Word2Vec - Trained a Word2Vec model using all sentences which occured throughout the entire restaurant document corpus.  Word2Vec yielded a dense 300-dimensional vector for each word in the vocabulary.  These word vectors can be thought of as encoding the semantic 'meaning' of each word.
 <br><br>
-5. Doc2Vec - Calculated restaurant vectors as the weighted average of the word vectors for all vocabulary words appearing in a given document.  Individual word vector weightings were based on the scaled TFIDF weights for each word in a document. 
+5. Doc2Vec - Calculated restaurant vectors as the weighted average of the word vectors for all vocabulary words appearing in a given document.  The individual word vector weightings were based on the scaled TFIDF weights for each word in a document. 
 
 
 ### Similarity Modeling Details and Parameters
