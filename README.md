@@ -12,7 +12,7 @@ In order to use the app, simply lookup a restaurant located in either New York o
 My dataset consisted of Yelp restaurant reviews for all restaurants in New York City and San Francisco with more than 50 reviews as of March 2015. Using Yelp's [search API](https://www.yelp.com/developers/documentation/v2/search_api) I received metadata for each restaurant in both cities.  I then scraped the URLs for each restaurant in order to get the text of their reviews.  This review html data was then further parsed to find the text of each review.  These data collection steps took approximately two days to run using two separate AWS instances.
 
 ### Dataset Scope
-The primary dataset for modeling consisted of all reviews for 11,000 restaurants across both New York and San Francisco with more than 50 reviews each. These were filtered from an even larger set of restaurants, however, which had any number of reviews; for each I was able to scrape the full text for each review. The most recent reviews were used up to a limit of 500.
+The primary dataset for modeling consisted of all reviews for 11,000 restaurants across both New York and San Francisco with more than 50 reviews each. These were filtered from an even larger set of restaurants, however, which had any number of reviews; for each restaurant, I was able to scrape the full text for each review. The most recent reviews were used up to a limit of 500.
 
 ## Modeling Similarities
 Each restaurant was first modeled as a 'document', which is a string created from the concatenation of the texts from their most recent (up to) 500 reviews.  I built a clean-tokenize-TFIDF-Word2Vec-Doc2Vec pipeline to create vectors for each restaurant from which cosine similarities could be calculated.  A few different methods of creating these vectors were tried before the final pipeline was chosen through a limited A/B testing framework.
@@ -49,7 +49,7 @@ One of the interesting results of using this app is that fine distinctions betwe
 ## Possible Next Steps
 * Add additional cities.
 * Increase the model's scope to include bars.
-* Explore other topic modeling techniques such as LDA to see if that would result in better restaurant vectors
+* Explore other topic modeling techniques such as [LDA](http://en.wikipedia.org/wiki/Latent_Dirichlet_allocation) to see if that would result in better restaurant vectors
 * Use more robust NLP techniques (lemmatization) in pre-processing the full review texts.
 * Explore using the formal Doc2Vec algorithm proposed by [Mikolov and Quoc](http://cs.stanford.edu/~quocle/paragraph_vector.pdf) to create the restaurant vectors.
 
