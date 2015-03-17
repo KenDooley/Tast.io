@@ -37,7 +37,7 @@ I originally tried three different methods of creating document vectors for each
 <br><br>
 3) a combination where the vector from 1) was appended to the vector from 2) for each restaurant.
 <br><br>
-After performing blind tests of each model with several people knowledgable of the San Francisco and NYC retaurants scenes, the Doc2Vec methodology emerged as the clear winner.
+After performing blind tests of each model with several people knowledgable of the San Francisco and NYC retaurants scenes, the Doc2Vec methodology emerged as the winner.
 
 ## Analysis
 I pickled the matrix of cosine similarities between every pair of restaurant vectors along with lookup dictionaries containing metadata for each restaurant.  Using this similarity matrix, the model is able to quickly lookup the 20 most similar restaurants (in either NYC or SF) to the target restaurant.
