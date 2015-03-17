@@ -16,20 +16,27 @@ The primary dataset for modeling consisted of all reviews for 11,000 restaurants
 
 ## Modeling Similarities
 Each restaurant was first modeled as a 'document', which is a string created from the concatenation of the texts from thier most recent (up to) 500 reviews.  I built a clean-tokenize-TFIDF-Word2Vec-Doc2Vec pipeline to create vectors for each restaurant from which cosine similarities could be calculated.  A few different methods of creating these vectors were tried before the final pipeline was chosen through a limited A/B testing framework.
+<br>
 1. Clean - Removed punctuation, symbols, and stopwords.  Performed stemming.  Found frequent word pairs to treat as bi-grams.
+<br>
 2. Tokenize - Converted the cleaned strings of words into a list of separate n-grams (1 and 2-grams, in this case)
+<br>
 3. TFIDF - Compiled a vocabulary of all tokens occuring more than once in the corpus, used it to build a TFIDF weighted Document-Token feature matrix.
+<br>
 4. Word2Vec - Trained a Word2Vec model using all sentences which occured throughout the entire restaurant document corpus.  Word2Vec yielded a dense 300-dimensional vector for each word in the vocabulary.  These word vectors can be thought of as encoding the semantic 'meaning' of each word.
+<br>
 5. Doc2Vec - Calculated restaurant vectors as the weighted average of the word vectors for all vocabulary words appearing in a given document.  Individual word vector weightings were based on the scaled TFIDF weights for each word in a document. 
 
 
 ### Similarity Modeling Details and Parameters
 I originally tried three different methods of creating document vectors for each restaurant:
-
+<br>
 1) After creating the TFIDF matrix in step 3 above, I reduced its dimensionality from the original vocabulary of 215,000 words and phrases to 300 'topics' using a technique called Latent Semantic Indexing which is based on singular value decomposition, a common matrix factorization technique.  These new vectors were then used to represent each restaurant.
+<br>
 2) The Doc2Vec method described above
+<br>
 3) a combination where the vector from 1) was appended to the vector from 2) for each restaurant.
-
+<br>
 After performing blind tests of each model with several people knowledgable of the San Francisco and NYC retaurants scenes, the Doc2Vec methodology emerged as the clear winner.
 
 ## Analysis
