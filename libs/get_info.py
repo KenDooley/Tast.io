@@ -83,7 +83,6 @@ def try_requests(url):
         logging.warning('Could not access link %s' % url)
         logging.warning("%d" % r.status_code)
         return ""
-    
 
 
 def get_reviews(busi, collection):
@@ -124,7 +123,7 @@ def get_reviews(busi, collection):
                 rev.extend(soup.find_all('div', class_='review'))
         try:
             collection.update({'id': busi['id']}, {'$set': {'reviews':
-                             [{'html': str(item)} for item in rev]}})
+                              [{'html': str(item)} for item in rev]}})
         except:
             with open('failed.txt', 'w') as failed:
                 for item in rev:
