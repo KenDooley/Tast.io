@@ -6,10 +6,6 @@ html, body {
 
 body
 {
-    /* background:url('../img/clouds.jpg');
-    background-repeat: no-repeat;
-    background-position: 0 0;
-    background-size: cover; */
     font-family: Helvetica, Sans-Serif;
     color: white;
     background-color: black;
@@ -39,10 +35,8 @@ body
     letter-spacing: 1px;
     line-height: 50%;
     top-margin: 0px;
-    /*left-margin: 20px;*/
-    /*padding: 10px;*/
     padding-left: 0px;
-    padding-top: 8px;
+    padding-top: 3px;
 }
 
 a#title_link{
@@ -53,13 +47,44 @@ a#title_link{
     letter-spacing: 1px;
     line-height: 50%;
     top-margin: 0px;
-    /*left-margin: 20px;*/
-    /*padding: 10px;*/
     padding-left: 18px;
     padding-top: 5px;
+    float: left;
+}
+
+#other {
+    color: #F0F0F0;
+    text-decoration: none;
+    font-family: "Copperplate";
+    font-size: 25px;
+    padding-right: 9px;
+    letter-spacing: 1px;
+    padding-top: 0px;
+    float: right;
+}
+
+#about {
+    color: #F0F0F0;
+    text-decoration: none;
+    font-family: "Copperplate";
+    font-size: 25px;
+    padding-right: 18px;
+    letter-spacing: 1px;
+    padding-top: 0px;
+    float: right;
+}
+
+#myGrid {
+    position: absolute;
+    width:46%;
+    height:100%;
+    margin-top:0px
 }
 
 #myTable {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     background-color: white;
 }
 
@@ -70,6 +95,11 @@ a#title_link{
 
 element.style {
     width: 600px;
+}
+
+#feedly-mini {
+    bottom: 35px;
+    opacity: 1;
 }
 
 

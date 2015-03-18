@@ -8,10 +8,11 @@
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
 <script src="../static/Leaflet.MakiMarkers/Leaflet.MakiMarkers.js"></script>
- 
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="../static/dist/components/slickgrid/slick.grid.css" type="text/css"/>
 <link rel="stylesheet" href="../static/dist/components/bootstrap/docs/assets/css/bootstrap.css" type="text/css"/>
 <link rel="stylesheet" href="../static/dist/example-bootstrap.css" type="text/css"/>
+
 <script src="../static/dist/components/jquery/jquery.js"></script>
 <script src="../static/dist/components/slickgrid/lib/jquery.event.drag-2.0.min.js"></script>
 <script src="../static/dist/components/jquery-ui/ui/jquery.ui.core.js"></script>
@@ -45,26 +46,21 @@ var myLats = [];
 <body>
 
 <div id="topbar">
-    <p id="title_link"><a href="/restaurant_query" id="title_link">Tast.io</a></p>
-    <!-- <a href="http://www.w3schools.com" id="banner">Visit W3Schools.com!</a> -->
+    <p id="title_link"><a href="/" id="title_link">Tast.io</a></p>
+    <p id="other"><a href="/krdooley" id="other">Contact</a></p>
+    <p id="about"><a href="/about" id="about">About</a></p>
 </div>
-<table width="100%" id="myTable">
+<table id="myTable">
   <tr>
     <td valign="top" width="50%">
-      <div id="myGrid" style="width:589px;height:584px;margin-top:0px" class="grid"></div>
-      <!-- <div id="grid4" class="grid"></div> -->
+      <div id="myGrid" class="grid"></div>
     </td>
     <td valign="top">
       
     </td>
   </tr>
 </table>
-<!-- <script src="../static/SlickGrid/lib/jquery-1.7.min.js"></script>
-<script src="../static/SlickGrid/lib/jquery.event.drag-2.2.js"></script>
 
-<script src="../static/SlickGrid/slick.core.js"></script>
-<script src="../static/SlickGrid/slick.grid.js"></script>
- -->
 <script>
   String.format = function() {
     // The string containing the format items (e.g. "{0}")
@@ -81,43 +77,13 @@ var myLats = [];
     
     return theString;
   }
+
   var grid;
   var j = {{top_restaurants|safe}};
   var N = Object.keys(j).length - 1
 
   var lati = j[N.toString()][0]
   var longi = j[N.toString()][1]
-
-
-  // var columns = [
-  //   {id: "Name", name: "Name", field: "name", width:200, resizable: false, formatter: function ( row, cell, value, columnDef, dataContext ) {
-  //           return "<a href=" + dataContext['url'] + " target=\"_blank\">" + value + '</a>';}},
-  //   {id: "Rating", name: "Rating", field: "rating", width:40, resizable: false},
-  //   {id: "Address", name: "Address", field: "address", width:150, resizable: false},
-  //   {id: "Category", name: "Category", field: "category", width:100, resizable: false},
-  // ];
-
-  // var options = {
-  //   enableCellNavigation: true,
-  //   enableColumnReorder: false,
-  //   rowHeight: 33
-  // };
-
-  // $(function () {
-  //   var data = [];
-  //   for (var i = 0; i < N; i++) {
-  //     data[i] = {
-  //       name: j[i]['name'],
-  //       url: j[i]['url'],
-  //       rating: j[i]['rating'],
-  //       address: j[i]['address'][0],
-  //       category: j[i]['category'][0][0],
-  //       // finish: "01/05/2009",
-  //       // effortDriven: (i % 5 == 0)
-  //     };
-  //   }
-  //   grid = new Slick.Grid("#myGrid", data, columns, options);
-  // })
 
 
 jQuery(function ($) {
@@ -171,11 +137,6 @@ jQuery(function ($) {
     handleCreate: function () {
       var o = this.wrapperOptions;
 
-      // checkbox column: add it
-      // var columns = o.columns.slice();
-      // var checkboxSelector = new Slick.CheckboxSelectColumn({});
-      // columns.unshift(checkboxSelector.getColumnDefinition());
-
       // configure grid with client-side data view
       var dataView = new Slick.Data.DataView();
       var grid = new Slick.Grid(this.element, dataView,
@@ -183,7 +144,6 @@ jQuery(function ($) {
 
       // selection model
       grid.setSelectionModel(new Slick.RowSelectionModel());
-      // grid.registerPlugin(checkboxSelector);
 
       // sorting
       var sortCol = o.sortCol;
@@ -210,15 +170,9 @@ jQuery(function ($) {
       dataView.setItems(o.data);
       dataView.endUpdate();
 
-      // if you don't want the items that are not visible (due to being filtered out
-      // or being on a different page) to stay selected, pass 'false' to the second arg
       dataView.syncGridSelection(grid, true);
 
-      grid.resizeCanvas(); // XXX Why is this needed? A possible bug?
-                           // If this is missing, the grid will have
-                           // a horizontal scrollbar, and the vertical
-                           // scrollbar cannot be moved. A column reorder
-                           // action fixes the situation.
+      grid.resizeCanvas(); 
 
     }
 
@@ -233,16 +187,22 @@ jQuery(function ($) {
 
 <div id='map'></div>
 <script>
+var regularIcon = "https://api.tiles.mapbox.com/v3/marker/pin-m-restaurant+008080@2x.png"
+var litUpIcon = "https://api.tiles.mapbox.com/v3/marker/pin-l-restaurant+FFFF00@2x.png"
 var j = {{top_restaurants|safe}};
-// var j_clean = j.replace('\"', '').replace('\'', '');
-// var myObject = JSON.parse(j);
-// console.log(myObject);
+
 var state = j[0]['location'];
 
 if (state === 'CA'){
     var loca = [37.777, -122.43];
+    var southWest = L.latLng(37.124, -122.846),
+        northEast = L.latLng(38.207, -121.769),
+        bounds = L.latLngBounds(southWest, northEast);
 } else {
     var loca = [40.743, -73.97];
+    var southWest = L.latLng(40.543, -74.155),
+        northEast = L.latLng(40.987, -73.514),
+        bounds = L.latLngBounds(southWest, northEast);
 }
 
 var icon = L.MakiMarkers.icon({icon: "rocket", color: "#b0b", size: "m"});
@@ -250,13 +210,12 @@ var iconRest = L.MakiMarkers.icon({icon: "restaurant", color: "#008080", size: "
 var iconRestMouse = L.MakiMarkers.icon({icon: "restaurant", color: "#FFFF00", size: "l"});
 
 L.mapbox.accessToken = 'pk.eyJ1Ijoia3Jkb29sZXkiLCJhIjoic2FqaHloOCJ9.b9Qc6ntzIzCymoKXryONIQ';
-var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 17})
+var map = L.mapbox.map('map', 'krdooley.le4in12k', {minZoom: 11, maxZoom: 17, maxBounds: bounds})
     .setView(loca, 13);
 
 for (i=1; i<N+1; i++){
   if (typeof j[i-1]['coordinate']['latitude'] !== 'undefined') {
-    // var website = j[i]['url']
-    // window.i = i
+
     L.marker([j[i-1]['coordinate']['latitude'], j[i-1]['coordinate']['longitude']], 
              {opacity: j[i-1]['sim_score'], icon: iconRest, alt: i}).bindLabel(j[i-1]['name'])
               .on('click', function(e) {
@@ -264,26 +223,45 @@ for (i=1; i<N+1; i++){
               })
               .on('mouseover', function(e) {
                 var alt = e.target.options.alt;
-                $($('.slick-row')[Number(alt) - 1]).css('background-color', 'yellow');
+                $($('.slick-row').sort(function(a, b) {
+
+                      var textA = Number(a.children[0].innerText);
+                      var textB = Number(b.children[0].innerText);
+
+                      if (textA < textB) 
+                         return -1; 
+                      if (textA > textB)
+                         return 1;
+                      return 0; 
+                  })[Number(alt) - 1]).css('background-color', 'yellow');
+                $('img[alt=\"' + alt + '\"]').attr('src', litUpIcon);
+
               })
               .on('mouseout', function(e) {
                 var alt = e.target.options.alt;
-                $($('.slick-row')[Number(alt) - 1]).css('background-color', 'white');
+                $($('.slick-row').sort(function(a, b) {
+
+                      var textA = Number(a.children[0].innerText);
+                      var textB = Number(b.children[0].innerText);
+
+                      if (textA < textB) 
+                         return -1; 
+                      if (textA > textB)
+                         return 1;
+                      return 0; 
+                  })[Number(alt) - 1]).css('background-color', 'white');
+                $('img[alt=\"' + alt + '\"]').attr('src', regularIcon);
               })
               .addTo(map);
   }
 }
 
 
-
 L.marker([lati,longi], {icon: icon}).bindLabel("You").addTo(map);
 
-var regularIcon = "https://api.tiles.mapbox.com/v3/marker/pin-m-restaurant+008080@2x.png"
-var litUpIcon = "https://api.tiles.mapbox.com/v3/marker/pin-l-restaurant+FFFF00@2x.png"
 
 $(document).on('mouseenter', ".slick-row", function () {
     $(this).css("background-color", "yellow");
-    // window.testing = $(this);
     var rank = $(this).children()[0].innerText;
     $('img[alt=\"' + rank + '\"]').attr('src', litUpIcon);
 }).on('mouseleave', ".slick-row", function () {
@@ -292,17 +270,6 @@ $(document).on('mouseenter', ".slick-row", function () {
     $('img[alt=\"' + rank + '\"]').attr('src', regularIcon);
 });
 
-// $('a').mouseover(function() {
-//   console.log('moused');
-//   var rank = $(this).children[0].innerText;
-//   $('img[alt=\"' + rank + '\"]').attr('src', litUpIcon);
-// });
-
-// $(input).mouseover(function()
-// {
-//    var showID = $(this).attr("ID");
-//    alert(showID);
-// });
 
 
 
@@ -310,5 +277,3 @@ $(document).on('mouseenter', ".slick-row", function () {
 </body>
 </html>
 
-<!-- .setView([37.772, -122.463], 13);  San Francisco-->
-<!-- .setView([40.753, -74.009], 13);  New York -->

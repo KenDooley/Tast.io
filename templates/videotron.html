@@ -4,7 +4,7 @@
 <link rel=stylesheet type="text/css" href="../static/videotron.css"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;libraries=places"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
-<!-- <script type="text/javascript" src="../static/js/modernizr-latest.js"></script> -->
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="../static/js/jquery.tubular.js"></script>
 <script>
         $().ready(function() {
@@ -40,33 +40,33 @@
         <div id="wrapper" style="position: relative; z-index: 99;">
                 <div class="social">
                 </div>
-                <div id="boxdiv">
+                
                 <div class="titles" id="topbar">
-                    <p>Tast.io</p>
+                    <p id="title_link"><a href="/" id="title_link">Tast.io</a></p>
+                    <p id="other"><a href="/krdooley" id="other">Contact</a></p>
+                    <p id="about"><a href="/about" id="about">About</a></p>
                 </div>
-                <div id="in">
-                    <p>In</p>
-                </div>
-                <br><br><br>
-                <!-- <form action="javascript:void(0);" name="form1" id="form1">
-                    <input type="text" class="textbox" id="location" value="" name="firstname" placeholder="Where to?"/>
-                    <input type="submit" value="Submit" class="submit" />
 
-                </form> -->
+                <div id="boxdiv">
+                
+                <br><br><br>
                 
                 <form action="/get_similarities" method='POST' name="form1" id="form1">
                     <input type="text" name="user_input" class="textbox" id="location" value="" placeholder="Find me places like ..."/>
+                    <div id="in">
+                        <p>In</p>
+                    </div>
                     <select id="dropdown" name="state"> 
-                        <option value="CA">San Francisco</option> 
+                        <option value="CA" selected>San Francisco</option> 
                         <option value="NY">New York</option> 
                     </select>
                     <select id="dropdown2" name="dist"> 
-                        <option class="geonew" value="0">Any distance</option> 
+                        <option class="geonew" value="0" selected>Any distance</option> 
                         <option class="geolong" value="1">Within 7 miles</option> 
                         <option class="geo" value="2">Within 2 miles</option> 
                     </select>
                     <input id="submit-btn" type="submit" value="Press here" class="text-center"/>
-                    <!-- div<input type="submit"> -->
+ 
                 </form>
                 </div>
                 
@@ -78,21 +78,18 @@
     var searchform = document.getElementById('form1');
     var place;
     var options = {
-    // bounds: hyderabadBounds,
     types:  ['establishment'],
     componentRestrictions: { country: 'us' }
     };
 
     var autocomplete = new google.maps.places.Autocomplete(input, options);
  
-    //Google Map variables
     var map;
     var marker;
  
     //Add listener to detect autocomplete selection
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
         place = autocomplete.getPlace();
-        // console.log(place.name);
     });
 
     
@@ -105,11 +102,6 @@
         map.setZoom(12);
  
     });
-     
-    //Reset the inpout box on click
-    // input.addEventListener('click', function(){
-    //     input.value = "";
-    // });
  
  
  
