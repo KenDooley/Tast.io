@@ -11,16 +11,15 @@ import numpy as np
 import json
 import pickle
 
-KEY = "YtYo3-wypceY7A63JaJPAw"
-SECRET_KEY = "xLX6MySk_gFK3cGI_FzwethvqDU"
-TOKEN = "BdQOXSrzwX6SO6vuAuzHLCUNOmGEMxCj"
-SECRET_TOKEN = "1Xcrnf4VVGWQYk-bOWGacaipNtc"
-
-
+KEY = "XXXXX"
+SECRET_KEY = "XXXXX"
+TOKEN = "XXXXXX"
+SECRET_TOKEN = "XXXXX"
 
 app = Flask(__name__)
 
 INDEX = similarities.MatrixSimilarity.load('data/w2v_matrix_wgt.index')
+
 with open('data/idx_name.obj', 'r') as f:
     IDX_NAME = pickle.load(f)
 
@@ -30,23 +29,29 @@ with open('data/name_idx.obj', 'r') as g:
 with open('data/w2v_matrix_wgt.obj', 'r') as h:
     BIG_MATRIX = pickle.load(h)
 
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-    return render_template('hello.html', name=name)
 
-@app.route('/restaurant_query')
+@app.route('/')
 def restaurant_query():
     return render_template('videotron.html')
 
-@app.route('/get_similarities', methods=['POST'] )
+
+@app.route('/krdooley')
+def krdooley():
+    return render_template('krdooley.html')
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@app.route('/get_similarities', methods=['POST'])
 def get_similarities():
-    # get data from request form, the key is the name you set in your form
 
     local_loc = request.form['dist']
     parsed = local_loc.split(",")
     local_search = int(parsed[0])
-    current_location = tuple(map(float,parsed[1:]))
+    current_location = tuple(map(float, parsed[1:]))
 
     if local_search == 0:
         target_distance = 500
@@ -54,7 +59,6 @@ def get_similarities():
         target_distance = 7
     else:
         target_distance = 2
-
 
     search_string = request.form['user_input'].lower()
     target = request.form['state']
@@ -73,21 +77,18 @@ def get_similarities():
         return redirect(url_for('restaurant_query'))
 
     params = {'location': city,
-                  'term': name,
-                  'category_filter': 'restaurants',
-                  'limit': 2,
-                  'offset': 0}
-
+              'term': name,
+              'category_filter': 'restaurants',
+              'limit': 2,
+              'offset': 0}
 
     d = yelp.request(params, KEY, SECRET_KEY, TOKEN, SECRET_TOKEN)
 
-    print d
-
-    print len(d['businesses'])
     if len(d['businesses']) < 2:
         biz = d['businesses'][0]['name'].lower().encode('utf8')
     else:
-        long_review = np.argmax([item['review_count'] for item in d['businesses']])
+        long_review = np.argmax([item['review_count'] for item
+                                in d['businesses']])
         biz1 = d['businesses'][0]['name'].lower().encode('utf8')
         biz2 = d['businesses'][1]['name'].lower().encode('utf8')
 
@@ -98,17 +99,12 @@ def get_similarities():
         else:
             biz = biz1
 
-
-    biz = biz.replace('é','e')
-    print biz, "here"
-    print " ".join(name.split('+'))
-    state = 'CA'
+    biz = biz.replace('é', 'e')
 
     if " ".join(name.split('+'))[:2].lower() != biz[:2]:
         return redirect(url_for('restaurant_query'))
 
     try:
-        # ids = NAME_IDX[biz]
         ids = NAME_IDX[biz.decode('utf8')]
     except:
         print "not in database", len(biz)
@@ -123,78 +119,35 @@ def get_similarities():
     len_targs = len(biz)
     if local_search == 0:
         for idx, sim in enumerate(sims):
-            if IDX_NAME[sim[0]]['location'] == target and IDX_NAME[sim[0]]['name'].lower()[:len_targs].encode('utf8') != biz:
-                #output.append((sim[1], IDX_NAME[sim[0]]['name'].encode('utf8')))
-                # output.append((IDX_NAME[sim[0]]['name'].encode('utf8'),
-                #                IDX_NAME[sim[0]]['rating'],
-                #                IDX_NAME[sim[0]]['snippet'].encode('utf8'),
-                #                IDX_NAME[sim[0]]['category'],
-                #                IDX_NAME[sim[0]]['url'],
-                #                IDX_NAME[sim[0]]['coordinate']['latitude'],
-                #                IDX_NAME[sim[0]]['coordinate']['longitude'],
-                #                IDX_NAME[sim[0]]['address']))
+            if IDX_NAME[sim[0]]['location'] == target and
+            IDX_NAME[sim[0]]['name'].lower()[:len_targs].encode('utf8') != biz:
                 output[counter] = IDX_NAME[sim[0]]
-                output[counter]["sim_score"] = "{0:.3f}".format(round(sim[1],3))
+                output[counter]["sim_score"] = "{0:.3f}".format(round(sim[1], 3))
                 counter += 1
-                if len(output) == 20:
+                if counter >= 20:
                     break
     else:
         for idx, sim in enumerate(sims):
             try:
-                geo_location = (IDX_NAME[sim[0]]['coordinate']['latitude'], IDX_NAME[sim[0]]['coordinate']['longitude'])
+                geo_location = (IDX_NAME[sim[0]]['coordinate']['latitude'],
+                                IDX_NAME[sim[0]]['coordinate']['longitude'])
             except:
                 continue
-            if IDX_NAME[sim[0]]['location'] == target and IDX_NAME[sim[0]]['name'].lower()[:len_targs].encode('utf8') != biz \
+            if IDX_NAME[sim[0]]['location'] == target and
+            IDX_NAME[sim[0]]['name'].lower()[:len_targs].encode('utf8') != biz
             and vincenty(current_location, geo_location).miles < target_distance:
-                #output.append((sim[1], IDX_NAME[sim[0]]['name'].encode('utf8')))
-                # output.append((IDX_NAME[sim[0]]['name'].encode('utf8'),
-                #                IDX_NAME[sim[0]]['rating'],
-                #                IDX_NAME[sim[0]]['snippet'].encode('utf8'),
-                #                IDX_NAME[sim[0]]['category'],
-                #                IDX_NAME[sim[0]]['url'],
-                #                IDX_NAME[sim[0]]['coordinate']['latitude'],
-                #                IDX_NAME[sim[0]]['coordinate']['longitude'],
-                #                IDX_NAME[sim[0]]['address']))
                 output[counter] = IDX_NAME[sim[0]]
-                output[counter]["sim_score"] = "{0:.3f}".format(round(sim[1],3))
+                output[counter]["sim_score"] = "{0:.3f}".format(round(sim[1], 3))
                 counter += 1
-                if len(output) == 15:
+                if counter >= 20:
                     break
 
     if len(output) == 0:
-        return "No results found"
+        print "No results found"
+        return redirect(url_for('restaurant_query'))
 
-    output_len = len(output)
-    output[output_len] = current_location
+    return render_template('top_restaurants.html',
+                           top_restaurants=json.dumps(output))
 
-    #print output[0]
-    #return ''.join(['%.2f <br>' % item[5]['longitude'] for item in output])
-    #.decode('utf8')
-    #print output
-    # fake = {
-    #     "name": "per se",
-    #     "lat": 100,
-    #     "long": 1000,
-    #     "url": "www.yahoo.com"
-    #     }
-    #return fake
-    return render_template('top_restaurants.html', top_restaurants=json.dumps(output))
-    # # convert data from unicode to string
-    # data = str(data)
-    
-    # # run a simple program that counts all the words
-    # dict_counter = {}
-    # for word in data.lower().split():
-    #     if word not in dict_counter:
-    #         dict_counter[word] = 1
-    #     else:
-    #         dict_counter[word] += 1
-    # total_words = len(dict_counter)
-    
-    # # now return your results 
-    # return 'Total words is %i, <br> dict_counter is: %s' % (total_words, dict_counter)
-@app.route('/geo')
-def geo():
-    return render_template('geo.html')
 app.debug = True
 app.run()
