@@ -52,6 +52,7 @@ One of the interesting results of using this app is that fine distinctions betwe
 * Explore other topic modeling techniques such as [LDA](http://en.wikipedia.org/wiki/Latent_Dirichlet_allocation) to see if that would result in better restaurant vectors
 * Use more robust NLP techniques (lemmatization) in pre-processing the full review texts.
 * Explore using the formal Doc2Vec algorithm proposed by [Mikolov and Quoc](http://cs.stanford.edu/~quocle/paragraph_vector.pdf) to create the restaurant vectors.
+* Allow the ability to tilt results towards or away from specific keyword vectors.
 
 ## Toolkit + Credits
 1. [Yelp API](https://www.yelp.com/developers/documentation/v2/search_api) 
