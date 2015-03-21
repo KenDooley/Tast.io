@@ -156,6 +156,9 @@ def get_similarities():
         print "No results found"
         return redirect(url_for('restaurant_query'))
 
+    output_len = len(output)
+    output[output_len] = current_location
+
     return render_template('top_restaurants.html',
                            top_restaurants=json.dumps(output))
 
