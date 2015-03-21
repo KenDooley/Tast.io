@@ -34,6 +34,7 @@ with open('data/w2v_matrix_wgt.obj', 'r') as h:
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def restaurant_query():
     return render_template('videotron.html')
@@ -77,7 +78,6 @@ def get_similarities():
     except:
         return redirect(url_for('restaurant_query'))
 
-
     params = {'location': city,
               'term': name,
               'category_filter': 'restaurants',
@@ -115,12 +115,12 @@ def get_similarities():
         ids = NAME_IDX[biz.decode('utf8')]
         vec = BIG_MATRIX[ids]
     except:
-        vec = scrape.get_search_vector(d['businesses'][long_review], BIGRAMS, DICTIONARY, TFIDF, WORD2VEC)
+        vec = scrape.get_search_vector(d['businesses'][long_review],
+                                       BIGRAMS, DICTIONARY, TFIDF, WORD2VEC)
         if len(vec) == 0:
             print "Could not find reviews"
             return redirect(url_for('restaurant_query'))
 
-    
     sims = INDEX[vec]
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
 

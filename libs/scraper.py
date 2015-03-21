@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
-import numpy as np 
+import numpy as np
 import requests
 import logging
 import time
@@ -39,12 +39,14 @@ def tokenize(doc):
                           if word not in STOPWORDS]
         return lemmas_no_stop
 
+
 def remov_punc(text):
         """
         Removes unicode punctuation from 'text' and replaces with a space.
         """
         global TABLE
         return text.translate(TABLE)
+
 
 def doc2vec(tfidf_doc, w2v_model, dictionary):
     """
@@ -54,7 +56,8 @@ def doc2vec(tfidf_doc, w2v_model, dictionary):
     word's TFIDF weight.  Words which appear in our corpus < 5 times are
     not considered.
 
-    INPUT: corpus_doc - a single document from a gensim corpus object
+    INPUT: tfidf_doc - a single gensim corpus object that has been tfidf
+           vectorized
            w2v_model - a trained gensim word2vec model
            dictionary - a gensim dictionary object
 
@@ -79,6 +82,7 @@ def doc2vec(tfidf_doc, w2v_model, dictionary):
         except:
             logging.warning("%s not in dictionary" % word[0])
     return output
+
 
 def get_npages(url):
     """
@@ -163,10 +167,6 @@ def get_search_vector(busi, phrase_file, dict_file, tfidf_file, word2vec_file):
                 bucket = soup.find_all('p', itemprop='description')
                 rev.extend([item.text.replace(u'\xa0', u' ') for item in bucket])
 
-        
         output = u" ".join(rev)
     output = tfidf_file[dict_file.doc2bow(phrase_file[tokenize(output)])]
     return doc2vec(output, word2vec_file, dict_file)
-
-
-
