@@ -3,10 +3,10 @@
 ### Kenneth Dooley, Zipfian Academy, 1/3/15 - 3/27/15
 
 ## Overview
-This project was motivated as a way to answer the question: When in a new city, how do you find local restaurants most similar to a favorite restaurant in your hometown?  I used the tools and techniques of data science to infer similarities between restaurants using only Yelp review text and created a content-based recommendation engine, [Tast.io](http://tast.io) ('Tasty-Oh').  This app can be used to find restaurant recommendations starting with any of 11,000 restaurants across both New York City and San Francisco as input.
+This project was motivated as a way to answer the question: When in a new city, how do you find local restaurants most similar to a favorite restaurant in your hometown?  I used the tools and techniques of data science to infer similarities between restaurants using only Yelp review text and created a content-based recommendation engine, [Tast.io](http://tast.io) ('Tasty-Oh').  This app can be used to find restaurant recommendations in both New York City and San Francisco starting with most US restaurants as input (as long as they have more than 20 Yelp reviews).
 
 ##How to Use
-In order to use the app, simply lookup a restaurant located in either New York or San Francisco in the search bar using Google places autocomplete, choose which city you would like to see your results in (searches where the input and outputs are entirely within one city also work), and choose distance based results if desired and you live in either New York or San Francisco (must allow location tracking and not be using a vpn for this to work).
+In order to use the app, simply lookup a restaurant in the search bar using Google places autocomplete, choose which city you would like to see your results in (searches where the input and outputs are entirely within one city also work), and choose distance based results if desired and you live in either New York or San Francisco (must allow location tracking and not be using a vpn for this to work).  If the restaurant you are using as your search target is not located in either NY or SF, you will need to wait about a minute after hitting the submit button while the engine scrapes your restaurant's reviews on Yelp.
 
 ## Dataset
 My dataset consisted of Yelp restaurant reviews for all restaurants in New York City and San Francisco with more than 50 reviews as of March 2015. Using Yelp's [search API](https://www.yelp.com/developers/documentation/v2/search_api) I received metadata for each restaurant in both cities.  I then scraped the URLs for each restaurant in order to get the text of their reviews.  This review html data was then further parsed to find the text of each review.  These data collection steps took approximately two days to run using two separate AWS instances.
@@ -21,9 +21,9 @@ Each restaurant was first modeled as a 'document', which is a string created fro
 <br><br>
 2. Tokenize - Converted the cleaned strings of words into a list of separate n-grams (1 and 2-grams, in this case)
 <br><br>
-3. TFIDF - Compiled a vocabulary of all tokens occuring more than once in the corpus, used it to build a TFIDF weighted Document-Token feature matrix.
+3. TFIDF - Compiled a vocabulary of all tokens occuring more than once in the corpus which I then used to create a bag-of-words representation for each document.  This was then used to build a TFIDF weighted Document-Token feature matrix.
 <br><br>
-4. Word2Vec - Trained a Word2Vec model using all sentences which occured throughout the entire restaurant document corpus.  Word2Vec yielded a dense 300-dimensional vector for each word in the vocabulary.  These word vectors can be thought of as encoding the semantic 'meaning' of each word.
+4. Word2Vec - Trained a Word2Vec skip-gram model using all sentences which occured throughout the entire restaurant document corpus.  Word2Vec yielded a dense 300-dimensional vector for each word in the vocabulary.  These word vectors can be thought of as encoding the semantic 'meaning' of each word.
 <br><br>
 5. Doc2Vec - Calculated restaurant vectors as the weighted average of the word vectors for all vocabulary words appearing in a given document.  The individual word vector weightings were based on the scaled TFIDF weights for each word in a document. 
 
@@ -37,10 +37,10 @@ I originally tried three different methods of creating document vectors for each
 <br><br>
 3) a combination where the vector from 1) was appended to the vector from 2) for each restaurant.
 <br><br>
-After performing blind tests of each model with several people knowledgable of the San Francisco and NYC retaurants scenes, the Doc2Vec methodology emerged as the winner.
+After performing blind tests of each model with several people knowledgable of the San Francisco and NYC retaurants scenes analyzing their output, the Doc2Vec methodology emerged as the winner.
 
-## Analysis
-I pickled the matrix of cosine similarities between every pair of restaurant vectors along with lookup dictionaries containing metadata for each restaurant.  Using this similarity matrix, the model is able to quickly lookup the 20 most similar restaurants (in either NYC or SF) to the target restaurant.
+## Launch
+I pickled the matrix of cosine similarities between every pair of restaurant vectors in NY and SF along with lookup dictionaries containing metadata for each restaurant.  Using this similarity matrix, the model is able to quickly lookup the 20 most similar restaurants (in either of those two cities) to the target restaurant.  Restaurants outside of these cities take longer to lookup since their reviews are scraped, parsed and vectorized at run time.   
 
 
 ### Example Searches
